@@ -25,6 +25,7 @@ services:
     environment:
       DATABASE_HOST: logistics_db
       DATABASE_NAME: logistics_db_store
+      RACK_ENV: production
     ports:
       - 9292:9292
 
@@ -33,11 +34,10 @@ services:
       context: ./logistics
       dockerfile: Dockerfile.event-handler
     depends_on:
-      - logistics_db
+      - logistics_api
       - events
     environment:
-      DATABASE_HOST: logistics_db
-      DATABASE_NAME: logistics_db_store
+      LOGISTICS_API: http://logistics_api:9292
       REDIS_CONNECTION: redis://events:6379
 
   logistics_db:
