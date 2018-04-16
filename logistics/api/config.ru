@@ -13,5 +13,5 @@ require 'shipments_api'
 
 run Rack::URLMap.new(
   '/' => Api,
-  '/shipments' => ShipmentsApi
+  '/shipments' => LogisticsApi
 )

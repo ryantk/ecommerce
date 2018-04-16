@@ -1,4 +1,4 @@
-class ShipmentsApi < Sinatra::Base
+class LogisticsApi < Sinatra::Base
 
   get '/' do
     content_type :json
