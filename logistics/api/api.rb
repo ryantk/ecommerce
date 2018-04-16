@@ -1,10 +1,5 @@
 class Api < Sinatra::Base
 
-  before do
-    request.body.rewind
-    @request_payload = JSON.parse(request.body.read)
-  end
-
   get '/' do
     content_type :json
     { health: :good }.to_json
