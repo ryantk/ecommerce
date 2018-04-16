@@ -4,9 +4,9 @@ RUN apk update && apk add build-base
 
 RUN mkdir /application
 WORKDIR /application
-ADD event-handler/Gemfile /application/Gemfile
-ADD event-handler/Gemfile.lock /application/Gemfile.lock
+ADD Gemfile /application/Gemfile
+ADD Gemfile.lock /application/Gemfile.lock
 RUN bundle install
-ADD event-handler /application
+ADD . /application
 
 CMD ruby main.rb

@@ -16,9 +16,7 @@ services:
 #    image: mongo:3.7.3
 
   logistics_api:
-    build:
-      context: ./logistics
-      dockerfile: Dockerfile.api
+    build: logistics/api
     depends_on:
       - logistics_db
       - events
@@ -30,9 +28,7 @@ services:
       - 9292:9292
 
   logistics_event_handler:
-    build:
-      context: ./logistics
-      dockerfile: Dockerfile.event-handler
+    build: logistics/event-handler
     depends_on:
       - logistics_api
       - events
