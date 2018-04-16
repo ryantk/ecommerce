@@ -1,0 +1,8 @@
+production:
+  clients:
+    default:
+      database: <%= ENV['DATABASE_NAME'] %>
+      hosts:
+        - <%= ENV['DATABASE_HOST'] %>
+  options:
+    raise_not_found_error: false

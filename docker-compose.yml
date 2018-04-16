@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+
+#  shop:
+#    build:
+#      context: shop
+#    depends_on:
+#      - shop_db
+#      - events
+#    environment:
+#      DATABASE_HOST: shop_db
+#      DATABASE_NAME: shob_db_store
+#
+#  shop_db:
+#    image: mongo:3.7.3
+
+  logistics_api:
+    build:
+      context: ./logistics
+      dockerfile: Dockerfile.api
+    depends_on:
+      - logistics_db
+      - events
+    environment:
+      DATABASE_HOST: logistics_db
+      DATABASE_NAME: logistics_db_store
+    ports:
+      - 9292:9292
+
+  logistics_event_handler:
+    build:
+      context: ./logistics
+      dockerfile: Dockerfile.event-handler
+    depends_on:
+      - logistics_db
+      - events
+    environment:
+      DATABASE_HOST: logistics_db
+      DATABASE_NAME: logistics_db_store
+      REDIS_CONNECTION: redis://events:6379
+
+  logistics_db:
+    image: mongo:3.7.3
+#
+#  tracking:
+#    build:
+#      ./tracking
+#    depends_on:
+#      - tracking_db
+#      - events
+#    environment:
+#      DATABASE_HOST: tracking_db
+#      DATABASE_NAME: tracking_db_store
+#
+#  tracking_db:
+#      image: mongo:3.7.3
+
+  events:
+    image: redis:3.2-alpine
