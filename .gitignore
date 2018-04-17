@@ -1,1 +1,4 @@
 .idea
+boxes/*
+.vagrant
+*.log
