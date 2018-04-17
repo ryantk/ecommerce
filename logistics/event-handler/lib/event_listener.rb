@@ -1,14 +1,21 @@
 class EventListener
-  attr_reader :redis
+  attr_reader :queue
 
-  def initialize(redis:)
-    @redis = redis
+  def initialize(event_queue_connection:)
+    channel   = event_queue_connection.create_channel
+    exchange  = channel.topic('events')
+    @queue    = channel.queue('', exclusive: true)
+
+    @queue.bind(exchange, routing_key: 'orders.*')
   end
 
   def start
-    redis.subscribe('Events.OrderCreated') do |on|
-      on.message do |channel, msg|
-        OrderCreatedHandler.new(data: JSON.parse(msg)).handle
+    queue.subscribe(block: true) do |delivery_info, properties, body|
+      puts " [x] #{delivery_info.routing_key}:#{body}"
+
+      case delivery_info.routing_key
+      when 'orders.OrderCreated'
+        OrderCreatedHandler.new(data: JSON.parse(body)).handle
       end
     end
   end
